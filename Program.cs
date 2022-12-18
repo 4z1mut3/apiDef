@@ -51,9 +51,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSingleton<IMovieService, MovieService>();
+builder.Services.AddSingleton<IAssociadoService, AssociadoService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 
 var app = builder.Build();
@@ -70,30 +70,30 @@ app.MapPost("/login",
     .Accepts<UserLogin>("application/json")
     .Produces<string>();
 
-app.MapPost("/create",
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-(Movie movie, IMovieService service) => Create(movie, service))
-    .Accepts<Movie>("application/json")
-    .Produces<Movie>(statusCode: 200, contentType: "application/json");
+//app.MapPost("/create",
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+//(Movie movie, IMovieService service) => Create(movie, service))
+//    .Accepts<Movie>("application/json")
+//    .Produces<Movie>(statusCode: 200, contentType: "application/json");
 
-app.MapGet("/get",
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Standard, Administrator")]
-(int id, IMovieService service) => Get(id, service))
-    .Produces<Movie>();
+//app.MapGet("/get",
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Standard, Administrator")]
+//(int id, IMovieService service) => Get(id, service))
+//    .Produces<Movie>();
 
-app.MapGet("/list",
-    (IMovieService service) => List(service))
-    .Produces<List<Movie>>(statusCode: 200, contentType: "application/json");
+//app.MapGet("/list",
+//    (IMovieService service) => List(service))
+//    .Produces<List<Movie>>(statusCode: 200, contentType: "application/json");
 
-app.MapPut("/update",
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-(Movie newMovie, IMovieService service) => Update(newMovie, service))
-    .Accepts<Movie>("application/json")
-    .Produces<Movie>(statusCode: 200, contentType: "application/json");
+//app.MapPut("/update",
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+//(Movie newMovie, IMovieService service) => Update(newMovie, service))
+//    .Accepts<Movie>("application/json")
+//    .Produces<Movie>(statusCode: 200, contentType: "application/json");
 
-app.MapDelete("/delete",
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-(int id, IMovieService service) => Delete(id, service));
+//app.MapDelete("/delete",
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+//(int id, IMovieService service) => Delete(id, service));
 
 IResult Login(UserLogin user, IUserService service)
 {
@@ -131,45 +131,45 @@ IResult Login(UserLogin user, IUserService service)
     return Results.BadRequest("Invalid user credentials");
 }
 
-IResult Create(Movie movie, IMovieService service)
-{
-    var result = service.Create(movie);
-    return Results.Ok(result);
-}
+//IResult Create(Movie movie, IMovieService service)
+//{
+//    var result = service.Create(movie);
+//    return Results.Ok(result);
+//}
 
-IResult Get(int id, IMovieService service)
-{
-    var movie = service.Get(id);
+//IResult Get(int id, IMovieService service)
+//{
+//    var movie = service.Get(id);
 
-    if (movie is null) return Results.NotFound("Movie not found");
+//    if (movie is null) return Results.NotFound("Movie not found");
 
-    return Results.Ok(movie);
-}
+//    return Results.Ok(movie);
+//}
 
-IResult List(IMovieService service)
-{
-    var movies = service.List();
+//IResult List(IMovieService service)
+//{
+//    var movies = service.List();
 
-    return Results.Ok(movies);
-}
+//    return Results.Ok(movies);
+//}
 
-IResult Update(Movie newMovie, IMovieService service)
-{
-    var updatedMovie = service.Update(newMovie);
+//IResult Update(Movie newMovie, IMovieService service)
+//{
+//    var updatedMovie = service.Update(newMovie);
 
-    if (updatedMovie is null) Results.NotFound("Movie not found");
+//    if (updatedMovie is null) Results.NotFound("Movie not found");
 
-    return Results.Ok(updatedMovie);
-}
+//    return Results.Ok(updatedMovie);
+//}
 
-IResult Delete(int id, IMovieService service)
-{
-    var result = service.Delete(id);
+//IResult Delete(int id, IMovieService service)
+//{
+//    var result = service.Delete(id);
 
-    if (!result) Results.BadRequest("Something went wrong");
+//    if (!result) Results.BadRequest("Something went wrong");
 
-    return Results.Ok(result);
-}
+//    return Results.Ok(result);
+//}
 
 app.UseSwaggerUI();
 
