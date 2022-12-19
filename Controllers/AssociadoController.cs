@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinimalJwt.Models;
 using MinimalJwt.Repositories;
+using MinimalJwt.Repositories.Contracts;
 using MinimalJwt.Services;
 
 namespace MinimalJwt.Controllers
@@ -12,25 +13,27 @@ namespace MinimalJwt.Controllers
     public class AssociadoController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly AssociadoRepository _associados;
+        private readonly IAssociadoRepository _associados;
+        
 
-        public AssociadoController(IConfiguration configuration, AssociadoRepository associados) 
+        public AssociadoController(IConfiguration configuration, IAssociadoRepository associados) 
         {
             _configuration = configuration;
             _associados = associados;
         }
 
-        [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet]       
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]       
         public IActionResult Get() 
         {
+            IEnumerable<Associado> associados = _associados as IEnumerable<Associado>;
             try
             {
-                return Ok(_associados);
+                return Ok("Funciona");
             }
             catch (Exception ex) 
             {
-                return BadRequest(_associados);
+                return BadRequest(ex.Message);
             }
         }
 

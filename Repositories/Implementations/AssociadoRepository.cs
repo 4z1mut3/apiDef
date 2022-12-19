@@ -1,9 +1,10 @@
 ﻿using MinimalJwt.Controllers;
 using MinimalJwt.Models;
+using MinimalJwt.Repositories.Contracts;
 
 namespace MinimalJwt.Repositories
 {
-    public class AssociadoRepository 
+    public class AssociadoRepository : IAssociadoRepository
     {
         public static List<Associado> Associados = new()
         {
@@ -14,10 +15,10 @@ namespace MinimalJwt.Repositories
             new() { IdAssociado = 5, Nome = "No Time to Die", CPF = "James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.", NomeMae = "guajarina" },
         };
 
-        //public IEnumerable<Associado> Get()
-        //{
-        //    return Associados;
-        //}
+        public List<Associado> Get()
+        {
+            return Associados;
+        }
     }
 }
 
